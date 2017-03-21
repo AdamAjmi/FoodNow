@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDB2SxMScx_UhuA8A_tudtOo1Onu-1H-VU&callback=initMap">
+  </script>
+
+  <script>
+    function initialize() {
+      var mapProp = {
+        center:new google.maps.LatLng(0,0),
+        zoom:1,
+        mapTypeId: 'roadmap'
+      };
+      new google.maps.Map(document.getElementById("googleMap"), mapProp);
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+  </script>
+</head>
+
+<body>
+<h1>this is just a test yall</h1>
+<div id="googleMap" style="width:800px;height:640px;"></div>
+
+</body>
+</html>
+

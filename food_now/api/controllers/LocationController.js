@@ -13,12 +13,9 @@ module.exports = {
     function handleCites(error, result)
     {
       res.ok({
-        error : error,
         value : result
       });
     }
-
-
   }
 };
 

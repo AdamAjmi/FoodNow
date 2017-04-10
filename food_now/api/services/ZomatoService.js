@@ -18,19 +18,14 @@ var ZomatoService = {
   {
     return request({ headers : headers, url : url + "lat=" + lat + "&lon=" + lon}, function(err, response, body)
     {
-      if (!err && response.statusCode == 200)
+      if (response.statusCode == 200)
       {
-        callback({
-          error : null,
-          response : JSON.parse(body)
-        });
+        callback(null, JSON.parse(body));
       }
       else
       {
-        callback({
-          error : err,
-          response : null
-        })
+        console.log("error?");
+        callback(err, null);
       }
     });
   }

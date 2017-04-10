@@ -28,6 +28,29 @@ var ZomatoService = {
         callback(err, null);
       }
     });
+  },
+
+  searchResturants : function(lat, lon, range, category, cuisinees, callback)
+  {
+      var url = "https://developers.zomato.com/api/v2.1/search?";
+      var params = ["lat="+lat, "lon="+lon];
+      if (range) params.push("radius="+range*1000);
+      if (category) params.push("category="+category);
+      if (cuisinees) params.push("cuisinees="+cuisinees);
+      url += params.join('&');
+
+      return request({headers: headers, url: url}, function (err, response, body)
+      {
+        if (response.statusCode == 200)
+        {
+          callback(null, JSON.parse(body));
+        }
+        else
+        {
+          console.log("error?");
+          callback(err, null);
+        }
+      });
   }
 
 

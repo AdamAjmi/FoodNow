@@ -6,9 +6,10 @@
  */
 
 module.exports = {
+
   'test' : function (req, res) {
 
-    ZomatoService.getResturants(51.5, 0, 100, handleCites);
+    ZomatoService.searchResturants(40.732013, -73.996155, 20, false, false, handleCites);
 
     function handleCites(error, result)
     {
@@ -17,6 +18,8 @@ module.exports = {
       });
     }
   },
+
+
   'show' : function (req, res) {
 
     var list = ZomatoService.getResturants(51.5, 0, 100, handleCites);

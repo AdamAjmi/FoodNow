@@ -43,9 +43,9 @@ module.exports.connections = {
   foodnow_MysqlServer: {
      adapter: 'sails-mysql',
      host: 'localhost',
-     user: 'foodnow_user', //optional
-     password: 'Test1234', //optional
-     database: 'foodnow' //optional
+     user: 'foodAdmin', //optional
+     password: 'tac0Truck', //optional
+     database: 'foodnowDB' //optional
    },
 
   /***************************************************************************

@@ -35,3 +35,11 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+
+.idea/Group-3.iml
+
+.idea/modules.xml
+
+.idea/vcs.xml
+
+.idea/workspace.xml

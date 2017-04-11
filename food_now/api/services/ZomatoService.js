@@ -4,7 +4,7 @@
 
 
 var zomatoApiKey = "3d3e95e6b9af0452a4b468cb7596bbc5";
-var url = "https://developers.zomato.com/api/v2.1/geocode?";
+var url = "https://developers.zomato.com/api/v2.1/";
 var request = require('request');
 
 var headers = {
@@ -16,7 +16,7 @@ var ZomatoService = {
 
   getResturants : function(lat, lon, range, callback)
   {
-    return request({ headers : headers, url : url + "lat=" + lat + "&lon=" + lon}, function(err, response, body)
+    return request({ headers : headers, url : url + "gecode?" + "lat=" + lat + "&lon=" + lon}, function(err, response, body)
     {
       if (response.statusCode == 200)
       {
@@ -51,8 +51,86 @@ var ZomatoService = {
           callback(err, null);
         }
       });
-  }
+  },
+  getCities : function (lat, lon, callback) {
 
+    var citiesUrl = url + "cities?" + ["lat=" + lat, "lon=" + lon].join('&');
+
+    return request({url : citiesUrl, headers : headers}, function (err, response, body)
+    {
+      if (response.statusCode == 200)
+      {
+        callback(null, JSON.parse(body));
+      }
+      else
+      {
+        console.log("error?");
+        callback(err, null);
+      }
+    });
+  },
+  getCousinesFromLocation : function (lat, lon, callback) {
+
+    var cuisinesUrl = url + "cuisines?" + ["lat=" + lat, "lon=" + lon].join('&');
+
+    return request({url : cuisinesUrl, headers : headers}, function (err, response, body)
+    {
+      if (response.statusCode == 200)
+      {
+        callback(null, JSON.parse(body));
+      }
+      else
+      {
+        console.log("error?");
+        callback(err, null);
+      }
+    });
+  },
+  getCousinesFromCity : function (city_id, callback) {
+
+    var cuisinesUrl = url + "cuisines?city_id=" + city_id;
+
+    return request({url : cuisinesUrl, headers : headers}, function (err, response, body)
+    {
+      if (response.statusCode == 200)
+      {
+        callback(null, JSON.parse(body));
+      }
+      else
+      {
+        console.log("error?");
+        callback(err, null);
+      }
+    });
+  },
+  getCategories : function (callback) {
+    return request({url : url + "categories", headers : headers}, function (err, response, body)
+    {
+      if (response.statusCode == 200)
+      {
+        callback(null, JSON.parse(body));
+      }
+      else
+      {
+        console.log("error?");
+        callback(err, null);
+      }
+    });
+  },
+  getResturantDetails : function (resutrant_id, callback) {
+    return request({url : url + "resturant?res_id=" + resutrant_id, headers : headers}, function (err, response, body)
+    {
+      if (response.statusCode == 200)
+      {
+        callback(null, JSON.parse(body));
+      }
+      else
+      {
+        console.log("error?");
+        callback(err, null);
+      }
+    });
+  },
 
 };
 

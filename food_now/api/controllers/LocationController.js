@@ -18,14 +18,19 @@ module.exports = {
       });
     }
   },
-
-
   'show' : function (req, res) {
 
     var list = ZomatoService.getResturants(51.5, 0, 100, handleCites);
     function handleCites(error, result)
     {
       res.view({list: result, error: error});
+    }
+  },
+  'cities/:lat/:lon' : function (req, res) {
+    ZomatoService.getCities(req.params['lat'], req.params['lon'], handleCites);
+    function handleCites(error, result)
+    {
+      res.ok(result);
     }
   }
 };

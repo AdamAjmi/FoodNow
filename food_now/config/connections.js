@@ -45,7 +45,8 @@ module.exports.connections = {
     host: 'localhost',
     user: 'foodAdmin', //optional
     password: 'tac0Truck', //optional
-    database: 'foodnowDB' //optional
+    database: 'foodnowDB', //optional
+    explicitHost: '1337'
   },
   /***************************************************************************
   *                                                                          *

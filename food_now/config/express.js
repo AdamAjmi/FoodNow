@@ -15,9 +15,9 @@ module.exports.express = {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    app.use(function(req, res, next){
-      res.locals.user = req.session.user;
-      next();
+    app.use(function( req, res, next ) {
+      PassportService.init();
+      next()
     });
 
   }

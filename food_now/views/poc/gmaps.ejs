@@ -51,18 +51,24 @@
           map: gmap,
           title: markerData.title
         });
+
         //Closure function is used because attempting to set content of info window inside the for loop
         //will make it so that every infoWindow will contain the same information from last for loop iteration.
         (function(marker, markerData) {
           //Adds a click event to the current marker
           google.maps.event.addListener(marker, "click", function(e) {
-            infoWindow.setContent(markerData.description);
+              //Sets the content of the infoWindow to display when clicked upon
+              infoWindow.setContent(
+                '<h1 id="firstHeading" class="firstHeading">' + markerData.title + '</h1>'
+                + '<div id="bodyContent">'
+                + markerData.description);
             infoWindow.open(gmap, marker);
           });
 
         })(marker, markerData);
-      }
-    }
+      } //end of for loop
+    } //end of initialize function
+
     //When the window has finished loading, execute function named initialize
     google.maps.event.addDomListener(window, 'load', initialize);
 

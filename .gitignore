@@ -43,3 +43,7 @@ jspm_packages
 .idea/vcs.xml
 
 .idea/workspace.xml
+
+.idea/Group-3.iml
+
+*.xml

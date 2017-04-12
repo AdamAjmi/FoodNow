@@ -18,7 +18,6 @@ module.exports.models = {
   *                                                                          *
   ***************************************************************************/
   connection: 'foodnow_MysqlServer',
-
   /***************************************************************************
   *                                                                          *
   * How and whether Sails will attempt to automatically rebuild the          *
@@ -28,5 +27,4 @@ module.exports.models = {
   *                                                                          *
   ***************************************************************************/
   migrate: 'alter'
-
 };

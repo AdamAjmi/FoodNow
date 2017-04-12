@@ -46,8 +46,8 @@ module.exports.connections = {
     user: 'foodAdmin', //optional
     password: 'tac0Truck', //optional
     database: 'foodnowDB', //optional
-    explicitHost: '1337'
   },
+
   /***************************************************************************
   *                                                                          *
   * MongoDB is the leading NoSQL database.                                   *

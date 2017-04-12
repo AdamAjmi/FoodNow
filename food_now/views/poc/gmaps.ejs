@@ -28,7 +28,7 @@
       }
     ]
 
-    //Function that creates the initial map that will be manipulated by later functions.
+    //Function that creates the map prop in the user interface
     function initialize() {
       var mapProp = {
         center:new google.maps.LatLng(59.8,10.5),
@@ -37,19 +37,33 @@
       };
 
     var gmap = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-
+    //Creates an info window to be reused by all markers created in the for loop below.
+    var infoWindow = new google.maps.InfoWindow();
+    //This for loop iterates over every object in a json list one at a time
       for (var i = 0, length = json.length; i < length; i++) {
         var markerData = json[i],
-            latLng = new google.maps.LatLng(markerData.lat, markerData.lng);
+          //Combines lat and lng into single variable
+          latLng = new google.maps.LatLng(markerData.lat, markerData.lng);
 
+        //Places a marker on the map
         var marker = new google.maps.Marker({
           position: latLng,
           map: gmap,
           title: markerData.title
         });
+        //Closure function is used because attempting to set content of info window inside the for loop
+        //will make it so that every infoWindow will contain the same information from last for loop iteration.
+        (function(marker, markerData) {
+          //Adds a click event to the current marker
+          google.maps.event.addListener(marker, "click", function(e) {
+            infoWindow.setContent(markerData.description);
+            infoWindow.open(gmap, marker);
+          });
+
+        })(marker, markerData);
       }
     }
-    //When the window has finished loading, execute function initialize
+    //When the window has finished loading, execute function named initialize
     google.maps.event.addDomListener(window, 'load', initialize);
 
 

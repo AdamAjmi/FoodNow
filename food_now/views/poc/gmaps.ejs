@@ -6,15 +6,54 @@
   </script>
 
   <script>
+    //JSON variable to be used for testing.
+    var json = [
+      {
+        "title": "PizzaPlaza",
+        "lat": 59.9,
+        "lng": 10.6,
+        "description": "good prize for good pizza at pizza plaza"
+      },
+      {
+        "title": "Doner Kebab",
+        "lat": 59.9,
+        "lng": 10.8,
+        "description": "Vi serverer deg kun den aller beste doner kebaben"
+      },
+      {
+        "title": "Burgerkongen",
+        "lat": 59.8,
+        "lng": 10.6,
+        "description": "burg"
+      }
+    ]
+
+    //Function that creates the initial map that will be manipulated by later functions.
     function initialize() {
       var mapProp = {
-        center:new google.maps.LatLng(0,0),
-        zoom:1,
+        center:new google.maps.LatLng(59.8,10.5),
+        zoom:9,
         mapTypeId: 'roadmap'
       };
-      new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+    var gmap = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+      for (var i = 0, length = json.length; i < length; i++) {
+        var markerData = json[i],
+            latLng = new google.maps.LatLng(markerData.lat, markerData.lng);
+
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: gmap,
+          title: markerData.title
+        });
+      }
     }
+    //When the window has finished loading, execute function initialize
     google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
   </script>
 </head>
 

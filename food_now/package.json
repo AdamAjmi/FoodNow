@@ -20,6 +20,7 @@
     "grunt-sync": "0.5.2",
     "include-all": "^1.0.0",
     "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
     "rc": "1.0.1",
     "sails": "~0.12.11",
     "sails-disk": "~0.10.9",

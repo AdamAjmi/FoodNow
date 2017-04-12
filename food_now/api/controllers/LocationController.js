@@ -14,18 +14,23 @@ module.exports = {
     function handleCites(error, result)
     {
       res.ok({
-        value : result
+        list : result
       });
     }
   },
   'show' : function (req, res) {
 
-    var list = ZomatoService.getResturants(51.5, 0, 100, handleCites);
+    ZomatoService.searchResturants(40.732013, -73.996155, 100, false, false, handleCites);
     function handleCites(error, result)
     {
+      console.log(result);
       res.view({list: result, error: error});
     }
+
+
+
   },
+
   'cities/:lat/:lon' : function (req, res) {
     ZomatoService.getCities(req.params['lat'], req.params['lon'], handleCites);
     function handleCites(error, result)

@@ -47,7 +47,7 @@ var ZomatoService = {
         }
         else
         {
-          console.log("error?");
+          console.log("error? search restaurants failed");
           callback(err, null);
         }
       });

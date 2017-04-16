@@ -14,10 +14,12 @@
 
 module.exports.session = {
 
-  adapter: 'foodnow_MysqlServer',
+  adapter: 'connect-mysql-session',
   host: 'localhost',
-  port: 1337,
-  db: 'sails-passport-example',
+  port: 3306,
+  db: 'foodnowDB',
+  user: 'foodAdmin', //optional
+  password: 'tac0Truck', //optional
   collection: 'sessions',
 
   /***************************************************************************

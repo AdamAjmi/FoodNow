@@ -10,10 +10,15 @@ module.exports = {
 
   attributes: {
 
+    connection: 'foodnow_MysqlServer',
+
     facebookId: {
-      type: 'string',
-      required: true,
-      unique: true
+      provider: 'string',
+      uid: 'string',
+      name: 'string',
+      email: 'string',
+      firstname: 'string',
+      lastname: 'string'
     }
 
   }

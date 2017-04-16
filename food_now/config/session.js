@@ -14,6 +14,12 @@
 
 module.exports.session = {
 
+  adapter: 'foodnow_MysqlServer',
+  host: 'localhost',
+  port: 1337,
+  db: 'sails-passport-example',
+  collection: 'sessions',
+
   /***************************************************************************
   *                                                                          *
   * Session secret is automatically generated when your new app is created   *

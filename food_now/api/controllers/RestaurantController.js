@@ -48,5 +48,26 @@ module.exports = {
       res.ok(result);
     }
   },
+  'restaurants/:lat/:lon/:category/:cousins' : function (req, res) {
 
+    ZomatoService.searchResturants(req.params['lat'], req.params['lon'], req.params['category'], req.params['cousins'], handleCites);
+
+    function handleCites(error, result)
+    {
+      res.ok({
+        list : result
+      });
+    }
+  },
+  'restaurants/:lat/:lon' : function (req, res) {
+
+    ZomatoService.searchResturants(req.params['lat'], req.params['lon'], false, false, handleCites);
+
+    function handleCites(error, result)
+    {
+      res.ok({
+        list : result
+      });
+    }
+  }
 };

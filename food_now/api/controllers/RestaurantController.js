@@ -41,7 +41,7 @@ module.exports = {
     }
   },
   'cuisines/:lat/:lon' : function (req, res) {
-    ZomatoService.getCousinesFromLocation(req.params['lat'], req.params['lon'], handleCousin);
+    ZomatoService.getCuisinesFromLocation(req.params['lat'], req.params['lon'], handleCousin);
 
     function handleCousin(error, result)
     {

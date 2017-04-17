@@ -15,7 +15,7 @@
         <label for="cuisinesSelect">Select Cuisines:</label>
         <select multiple class="form-control" id="cuisinesSelect" title="use Ctrl to select more than one">
           <option value=false></option>
-          <option></option>
+          <option ng-repeat="cuisine in cuisines" value={{ cuisine.cuisine.id }}>{{ cuisine.cuisine.name }}</option>
         </select>
       </div>
     </form>
@@ -34,11 +34,22 @@
         $scope.categories = response.data.categories;
         console.log(response.data.categories)
       }, function myError(response) {
-        $scope.myWelcome = response.statusText;
+        $scope.categoriesError = response.statusText;
+      });
+    };
+
+
+    $scope.getCuisines = function () {
+      $http.get("/restaurant/cuisines/lat=40.732013/lon=-73.996155").then(function mySucces(response) {
+        $scope.cuisines = response.data.cuisines;
+        console.log(response.data.cuisines)
+      }, function myError(response) {
+        $scope.cuisinesError = response.statusText;
       });
     };
 
     $scope.getCategories()
+    $scope.getCuisines()
 
 
   });

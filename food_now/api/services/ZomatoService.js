@@ -69,7 +69,7 @@ var ZomatoService = {
       }
     });
   },
-  getCousinesFromLocation : function (lat, lon, callback) {
+  getCuisinesFromLocation : function (lat, lon, callback) {
 
     var cuisinesUrl = url + "cuisines?" + ["lat=" + lat, "lon=" + lon].join('&');
 

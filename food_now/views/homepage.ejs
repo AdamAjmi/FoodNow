@@ -1,6 +1,8 @@
 
+
 <div ng-app="searchApp" ng-controller="searchCtrl">
 
+  {{location}}
 
   <div class="container">
     <h2>Food Now</h2>
@@ -28,7 +30,6 @@
   app.controller('searchCtrl', function($scope, $http)
   {
 
-
     $scope.getCategories = function () {
       $http.get("/restaurant/categories").then(function mySucces(response) {
         $scope.categories = response.data.categories;
@@ -38,8 +39,24 @@
       });
     };
 
-    $scope.getCategories()
+    $scope.getLocation = function() { 
+      $http.get('http://freegeoip.net/json/').then(function httpHandling(response)
+      {
+        //TODO: Do something with the location data.
+        //Handle the data however you need.
+        $scope.location = response.data;
+      });
+    }
+
+    $scope.getCategories();
+
+    $scope.getLocation();
+
 
 
   });
+
+
+
+
 </script>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDB2SxMScx_UhuA8A_tudtOo1Onu-1H-VU&callback=initMap">
+  </script>
+
+  <script>
+    //JSON variable to be used for testing.
+    var json = [
+      {
+        "title": "PizzaPlaza",
+        "lat": 59.9,
+        "lng": 10.6,
+        "description": "good prize for good pizza at pizza plaza"
+      },
+      {
+        "title": "Doner Kebab",
+        "lat": 59.9,
+        "lng": 10.8,
+        "description": "Vi serverer deg kun den aller beste doner kebaben"
+      },
+      {
+        "title": "Burgerkongen",
+        "lat": 60.9,
+        "lng": 10.6,
+        "description": "burg"
+      }
+    ]
+
+    //Function that creates the map prop in the user interface
+    function initialize() {
+      var mapProp = {
+        //center:new google.maps.LatLng(59.8,10.5),
+        //zoom:9,
+        mapTypeId: 'roadmap'
+      };
+    var gmap = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+    //Creates an info window to be reused by all markers created in the for loop below.
+    var infoWindow = new google.maps.InfoWindow();
+    //Holds location values of markers to set map bounds
+    var bounds = new google.maps.LatLngBounds();
+    //This for loop iterates over every object in a json list one at a time
+      for (var i = 0, length = json.length; i < length; i++) {
+        var markerData = json[i],
+          //Combines lat and lng into single variable
+          latLng = new google.maps.LatLng(markerData.lat, markerData.lng);
+
+        //Places a marker on the map
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: gmap,
+          title: markerData.title
+        });
+
+        //Adds every marker position to bounds variable
+        bounds.extend(marker.position);
+
+        //Closure function is used because attempting to set content of info window inside the for loop
+        //will make it so that every infoWindow will contain the same information from last for loop iteration.
+        (function(marker, markerData) {
+          //Adds a click event to the current marker
+          google.maps.event.addListener(marker, "click", function(e) {
+              //Sets the content of the infoWindow to display when clicked upon
+              infoWindow.setContent(
+                '<h1 id="firstHeading" class="firstHeading">' + markerData.title + '</h1>'
+                + '<div id="bodyContent">'
+                + markerData.description);
+            infoWindow.open(gmap, marker);
+          });
+          //Uses current bounds to fit the map to hold all markers
+          gmap.fitBounds(bounds);
+        })(marker, markerData);
+      } //end of for loop
+    } //end of initialize function
+
+    //When the window has finished loading, execute function named initialize
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
+  </script>
+</head>
+
+<body>
+<h1>this is just a test yall</h1>
+<div id="googleMap" style="width:800px;height:640px;"></div>
+
+</body>
+</html>
+

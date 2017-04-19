@@ -6,6 +6,9 @@
     <h2>Food Now</h2>
     <form>
       <div class="form-group">
+        <label for="rangeInput">Range:</label>
+        <input type="number" min="1" id="rangeInput" class="form-control" ng-model="query.range">
+        <br>
         <label for="categorySelect">Select A Category:</label>
         <select class="form-control" id="categorySelect">
           <option value=false></option>
@@ -32,7 +35,7 @@
     $scope.getCategories = function () {
       $http.get("/restaurant/categories").then(function mySucces(response) {
         $scope.categories = response.data.categories;
-        console.log(response.data.categories)
+        console.log(response.data.categories);
       }, function myError(response) {
         $scope.categoriesError = response.statusText;
       });
@@ -40,7 +43,18 @@
 
 
     $scope.getCuisines = function () {
-      $http.get("/restaurant/cuisines/lat=40.732013/lon=-73.996155").then(function mySucces(response) {
+      $http.get("/restaurant/cuisines/lat="+$scope.query.lat+"/lon="+$scope.query.lon).then(function mySucces(response) {
+        $scope.cuisines = response.data.cuisines;
+        console.log("JUst wo wor   "+"/restaurant/cuisines/lat="+$scope.query.lat+"/lon="+$scope.query.lon);
+        console.log(response.data.cuisines);
+      }, function myError(response) {
+        $scope.cuisinesError = response.statusText;
+      });
+    };
+
+
+    $scope.searchResturants = function () {
+      $http.get("/restaurant/cuisines/lat="+$scope.query.lat+"/lon="+$scope.query.lon+"/range="+$scope.query.range).then(function mySucces(response) {
         $scope.cuisines = response.data.cuisines;
         console.log(response.data.cuisines)
       }, function myError(response) {
@@ -48,6 +62,8 @@
       });
     };
 
+    $scope.location = {'lat':40.732013,'lon':-73.996155}
+    $scope.query = {'lat':$scope.location.lat,'lon':$scope.location.lon,'range':50,}
     $scope.getCategories()
     $scope.getCuisines()
 

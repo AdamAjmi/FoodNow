@@ -10,28 +10,29 @@ var request = require('request');
 var headers = {
   'Accept' : 'application/json',
   'user-key' : zomatoApiKey
-}
+};
 
 var ZomatoService = {
 
-  getResturants : function(lat, lon, range, callback)
-  {
-    return request({ headers : headers, url : url + "gecode?" + "lat=" + lat + "&lon=" + lon}, function(err, response, body)
-    {
-      if (response.statusCode == 200)
-      {
-        callback(null, JSON.parse(body));
-      }
-      else
-      {
-        console.log("error?");
-        callback(err, null);
-      }
-    });
-  },
+  // getResturants : function(lat, lon, range, callback)
+  // {
+  //   return request({ headers : headers, url : url + "gecode?" + "lat=" + lat + "&lon=" + lon}, function(err, response, body)
+  //   {
+  //     if (response.statusCode == 200)
+  //     {
+  //       callback(null, JSON.parse(body));
+  //     }
+  //     else
+  //     {
+  //       console.log("error?");
+  //       callback(err, null);
+  //     }
+  //   });
+  // },
 
   searchResturants : function(lat, lon, range, category, cuisinees, callback)
   {
+      console.log("lat="+lat+"\nlon="+lon+"\nrange="+range+"\ncategory="+category+"\ncuisinees="+cuisinees);
       var url = "https://developers.zomato.com/api/v2.1/search?";
       var params = ["lat="+lat, "lon="+lon];
       if (range) params.push("radius="+range*1000);
@@ -77,6 +78,7 @@ var ZomatoService = {
     {
       if (response.statusCode == 200)
       {
+        console.log("no error?");
         callback(null, JSON.parse(body));
       }
       else
@@ -130,7 +132,7 @@ var ZomatoService = {
         callback(err, null);
       }
     });
-  },
+  }
 
 };
 

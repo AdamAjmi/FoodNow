@@ -68,7 +68,7 @@
                 + markerData.description);
             infoWindow.open(gmap, marker);
           });
-          //Uses every
+          //Uses current bounds to fit the map to hold all markers
           gmap.fitBounds(bounds);
         })(marker, markerData);
       } //end of for loop

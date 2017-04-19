@@ -61,11 +61,12 @@ var ZomatoService = {
     {
       if (response.statusCode == 200)
       {
+        sails.log("no city error?" + citiesUrl);
         callback(null, JSON.parse(body));
       }
       else
       {
-        console.log("error?");
+        console.log("has error?");
         callback(err, null);
       }
     });
@@ -83,7 +84,7 @@ var ZomatoService = {
       }
       else
       {
-        console.log("error?");
+        console.log("Cuisines error?");
         callback(err, null);
       }
     });
@@ -110,6 +111,7 @@ var ZomatoService = {
     {
       if (response.statusCode == 200)
       {
+        console.log("error?");
         callback(null, JSON.parse(body));
       }
       else

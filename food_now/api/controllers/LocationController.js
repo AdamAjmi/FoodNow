@@ -32,7 +32,8 @@ module.exports = {
   },
 
   'cities/:lat/:lon' : function (req, res) {
-    ZomatoService.getCities(req.params['lat'], req.params['lon'], handleCites);
+    console.log("lat="+req.params['lat']+"\nlon="+req.params['lon']);
+    ZomatoService.getCities(req.params.lat, req.params.lon, handleCites);
     function handleCites(error, result)
     {
       res.ok(result);

@@ -4,22 +4,21 @@
 
   <div class="container">
     <h2>Food Now</h2>
-    <form>
-      <div class="form-group">
-        <label for="rangeInput">Range (km):</label>
-        <input type="number" min="1" id="rangeInput" class="form-control" ng-model="query.range">
-        <br>
-        <label for="categorySelect">Select A Category:</label>
-        <select class="form-control" id="categorySelect" ng-model="query.category">
-          <option ng-repeat="category in categories" value={{ category.categories.id }}>{{ category.categories.name }}</option>
-        </select>
-        <br>
-        <label for="cuisinesSelect">Select Cuisines:</label>
-        <select multiple class="form-control" id="cuisinesSelect" title="use Ctrl to select more than one" ng-model="query.cuisines">
-          <option ng-repeat="cuisine in cuisines" value={{ cuisine.cuisine.cuisine_id }}>{{ cuisine.cuisine.cuisine_name }}</option>
-        </select>
-      </div>
-    </form>
+    <div class="form-group">
+      <label for="rangeInput">Range (km):</label>
+      <input type="number" min="1" id="rangeInput" class="form-control" ng-model="query.range">
+      <br>
+      <label for="categorySelect">Select A Category:</label>
+      <select class="form-control" id="categorySelect" ng-model="query.category">
+        <option ng-repeat="category in categories" value={{ category.categories.id }}>{{ category.categories.name }}</option>
+      </select>
+      <br>
+      <label for="cuisinesSelect">Select Cuisines:</label>
+      <select multiple class="form-control" id="cuisinesSelect" title="use Ctrl to select more than one" ng-model="query.cuisines">
+        <option ng-repeat="cuisine in cuisines" value={{ cuisine.cuisine.cuisine_id }}>{{ cuisine.cuisine.cuisine_name }}</option>
+      </select>
+    </div>
+    <a ng-click="searchResturants()" class="btn btn-default pull-right">Search</a>
   </div>
 
 
@@ -43,7 +42,6 @@
     $scope.getCuisines = function () {
       $http.get("/restaurant/cuisines/"+$scope.query.lat+"/"+$scope.query.lon).then(function mySucces(response) {
         $scope.cuisines = response.data.cuisines;
-        console.log("JUst wo wor   "+"/restaurant/cuisines/lat="+$scope.query.lat+"/lon="+$scope.query.lon);
         console.log(response.data.cuisines);
       }, function myError(response) {
         $scope.cuisinesError = response.statusText;
@@ -52,16 +50,15 @@
 
 
     $scope.searchResturants = function () {
-      $http.get("/restaurant/cuisines/"+$scope.query.lat+"/"+$scope.query.lon+"/"+$scope.query.range).then(function mySucces(response) {
-        $scope.cuisines = response.data.cuisines;
-        console.log(response.data.cuisines)
+      $http.get("/restaurant/restaurants/"+$scope.query.lat+"/"+$scope.query.lon+"/"+$scope.query.range).then(function mySucces(response) {
+        $scope.restaurants = response.data;
+        console.log(response.data)
       }, function myError(response) {
-        $scope.cuisinesError = response.statusText;
+        $scope.restaurantsError = response.statusText;
       });
     };
 
-    $scope.location = {'lat':40.732013,'lon':-73.996155}
-    $scope.query = {'lat':$scope.location.lat,'lon':$scope.location.lon,'range':50,'category':false,'cuisines':false}
+    $scope.query = {'lat':40.732013,'lon':-73.996155,'range':50,'category':false,'cuisines':false}
     $scope.getCategories()
     $scope.getCuisines()
 

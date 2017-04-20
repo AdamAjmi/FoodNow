@@ -130,6 +130,8 @@
         }
         //Pans the map to the clicked coordinates.
         gmap.panTo(latLng);
+
+        //Splits latLng into two variables to be compatible with Zomato service
         var latitude = marker.position.lat();
         var longitude = marker.position.lng();
 

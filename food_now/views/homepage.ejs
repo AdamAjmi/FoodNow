@@ -68,12 +68,28 @@
     };
 
     $scope.setMapPosition = function(restaurant) {
+
+      var infoWindow = new google.maps.InfoWindow();
+      //var bounds = new google.maps.LatLngBounds();
       var marker = new google.maps.Marker({
         position: new google.maps.LatLng(restaurant.location.latitude, restaurant.location.longitude),
         map: $scope.gmap,
         title: restaurant.name
       });
-    }
+
+      //bounds.extend(marker.position);
+        //Adds a click event to the current marker
+        //console.log("We made it boys");
+        google.maps.event.addListener(marker, "click", function (e) {
+          //Sets the content of the infoWindow to display when clicked upon
+          infoWindow.setContent(
+            '<h1 id="firstHeading" class="firstHeading">' + restaurant.name + '</h1>'
+            + '<div id="bodyContent">'
+            + restaurant.url);
+          infoWindow.open($scope.gmap, marker);
+        });
+      //$scope.gmap.fitBounds(bounds);
+    };
 
     $scope.search = function()
     {
@@ -99,7 +115,6 @@
               //var restaurant = response.data.restaurants[x].restaurant;
 
               $scope.setMapPosition(response.data.restaurants[x].restaurant);
-
 
               //console.log(response.data.restaurants[x].restaurant);
               //console.log('only name?');
@@ -154,9 +169,14 @@
           //Assuming that there is no marker object...
           else {
             //...we create a new marker.
+            var image = {
+              url: "http://freevector.co/wp-content/uploads/2009/05/9769-burger-marker1.png",
+            };
             marker = new google.maps.Marker({
               position: latLng,
-              map: gmap
+              map: gmap,
+              icon: image
+
             });
             console.log("Position of new marker is: " + latLng);
 

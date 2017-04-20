@@ -28,7 +28,7 @@
     <div id="googleMap" style="width:480px;height:360px;">
 
     </div>
-    <a ng-click="searchResturants()" class="btn btn-default pull-right">Search</a>
+    <a ng-click="search()" class="btn btn-default pull-right">Search</a>
   </div>
 
 
@@ -67,9 +67,28 @@
       });
     };
 
-    $scope.query = {'lat':40.732013,'lon':-73.996155,'range':50,'category':false,'cuisines':false}
-    $scope.getCategories()
-    $scope.getCuisines()
+    $scope.search = function()
+    {
+      $http.get("/restaurant/restaurants/"+$scope.query.lat+"/"+$scope.query.lon+"/"+ $scope.query.range).then(function mySucces(response) {
+
+          if(typeof response.data.restaurants != 'undefined')
+          {
+            for(var x = 0; x < response.data.restaurants.length; x++)
+            {
+              console.log(response.data.restaurants[x].restaurant);
+              console.log('only name?');
+              console.log(response.data.restaurants[x].restaurant.name);
+            }
+          }
+          else
+          {
+              //TODO: do something when nothing is found. ?
+          }
+
+      }, function myError(response) {
+        $scope.restaurantsError = response.statusText;
+      });
+    }
 
     $scope.getLocation = function() { 
       $http.get('http://freegeoip.net/json/').then(function httpHandling(response)
@@ -77,10 +96,86 @@
         //TODO: Do something with the location data.
         //Handle the data however you need.
         $scope.location = response.data;
+        $scope.query.lat = response.data.latitude
+        $scope.query.lon = response.data.longitude;
+
+        $scope.getCategories();
+        $scope.getCuisines();
+
       });
     }
 
+    $scope.initialize = function()
+    {
+      $http.get('http://freegeoip.net/json/').then(function httpHandling(response)
+      {
+
+        //TODO: Do something with the location data.
+        //Handle the data however you need.
+        //$scope.location = response.data;
+
+        //console.log("creating map prop");
+        var mapProp = {
+          center:new google.maps.LatLng(response.data.latitude, response.data.longitude),
+          zoom:9,
+          mapTypeId: 'roadmap'
+        };
+        //console.log("prop created");
+        var gmap = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+        //Creates an empty global variable which we define in function placeMarkerAndPanTo
+        var marker;
+
+        //Adds a listener for clicks on the map and runs function if a click registers
+        gmap.addListener('click', function(e) {
+          placeMarkerAndPanTo(e.latLng, gmap);
+        });
+
+        //Function that places a marker where user has clicked, or moves current marker if marker already exists
+        function placeMarkerAndPanTo(latLng, gmap) {
+          //If a marker object already exists...
+          if (marker) {
+            //...move marker to new position.
+            marker.setPosition(latLng);
+            console.log("Marker was moved to " + latLng);
+          }
+          //Assuming that there is no marker object...
+          else {
+            //...we create a new marker.
+            marker = new google.maps.Marker({
+              position: latLng,
+              map: gmap
+            });
+            console.log("Position of new marker is: " + latLng);
+
+
+          }
+          //Pans the map to the clicked coordinates.
+          gmap.panTo(latLng);
+
+          //Splits latLng into two variables to be compatible with Zomato service
+          $scope.query.lat = marker.position.lat();
+          $scope.query.lon = marker.position.lng();
+
+
+          console.log("Latitude: " + $scope.query.lat);
+          console.log("Longitude: " + $scope.query.lon);
+
+
+          //TODO: Pass latLng to Angular so that it can be used for API query to Zomato
+        }//end of initialize function
+        //When the window has finished loading, execute function named initialize
+
+      });
+
+    }
+
+    //initialize.
+    $scope.query = {'lat': '','lon':'','range':'50','category':false,'cuisines':false}
+
     $scope.getLocation();
+
+    $scope.initialize();
+
 
 
   });
@@ -92,7 +187,7 @@
 
 <script>
   //Function that creates the map prop in the user interface
-  function initialize() {
+  /*function initialize() {
     //console.log("creating map prop");
       var mapProp = {
       center:new google.maps.LatLng(59.8,10.5),
@@ -143,6 +238,6 @@
       }
   } //end of initialize function
   //When the window has finished loading, execute function named initialize
-  google.maps.event.addDomListener(window, 'load', initialize);
+  google.maps.event.addDomListener(window, 'load', initialize);*/
 
 </script>

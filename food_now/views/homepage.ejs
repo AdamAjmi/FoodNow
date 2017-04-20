@@ -4,6 +4,7 @@
 
   {{location}}
 
+
   <div class="container">
     <h2>Food Now</h2>
     <div class="form-group">
@@ -19,6 +20,12 @@
       <select multiple class="form-control" id="cuisinesSelect" title="use Ctrl to select more than one" ng-model="query.cuisines">
         <option ng-repeat="cuisine in cuisines" value={{ cuisine.cuisine.cuisine_id }}>{{ cuisine.cuisine.cuisine_name }}</option>
       </select>
+    </div>
+      <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDB2SxMScx_UhuA8A_tudtOo1Onu-1H-VU&callback=initMap">
+      </script>
+    <div id="googleMap" style="width:480px;height:360px;">
+
     </div>
     <a ng-click="searchResturants()" class="btn btn-default pull-right">Search</a>
   </div>
@@ -62,7 +69,7 @@
     $scope.query = {'lat':40.732013,'lon':-73.996155,'range':50,'category':false,'cuisines':false}
     $scope.getCategories()
     $scope.getCuisines()
-    
+
     $scope.getLocation = function() { 
       $http.get('http://freegeoip.net/json/').then(function httpHandling(response)
       {
@@ -79,5 +86,51 @@
 
 
 
+
+</script>
+
+<script>
+  //Function that creates the map prop in the user interface
+  function initialize() {
+    //console.log("creating map prop");
+      var mapProp = {
+      center:new google.maps.LatLng(59.8,10.5),
+      zoom:9,
+      mapTypeId: 'roadmap'
+    };
+    //console.log("prop created");
+      var gmap = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+      //Creates an empty global variable which we define in function placeMarkerAndPanTo
+      var marker;
+
+      //Adds a listener for clicks on the map and runs function if a click registers
+      gmap.addListener('click', function(e) {
+          placeMarkerAndPanTo(e.latLng, gmap);
+      });
+
+      //Function that places a marker where user has clicked, or moves current marker if marker already exists
+      function placeMarkerAndPanTo(latLng, gmap) {
+        //If a marker object already exists...
+        if (marker) {
+            //...move marker to new position.
+            marker.setPosition(latLng);
+          console.log("Marker was moved to " + latLng);
+        }
+        //Assuming that there is no marker object...
+        else {
+          //...we create a new marker.
+          marker = new google.maps.Marker({
+            position: latLng,
+            map: gmap
+          });
+          console.log("Position of new marker is: " + latLng);
+
+        }
+        //Pans the map to the clicked coordinates.
+        gmap.panTo(latLng);
+      }
+  } //end of initialize function
+  //When the window has finished loading, execute function named initialize
+  google.maps.event.addDomListener(window, 'load', initialize);
 
 </script>

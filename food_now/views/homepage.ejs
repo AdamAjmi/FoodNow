@@ -67,17 +67,43 @@
       });
     };
 
+    $scope.setMapPosition = function(restaurant) {
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(restaurant.location.latitude, restaurant.location.longitude),
+        map: $scope.gmap,
+        title: restaurant.name
+      });
+    }
+
     $scope.search = function()
     {
       $http.get("/restaurant/restaurants/"+$scope.query.lat+"/"+$scope.query.lon+"/"+ $scope.query.range).then(function mySucces(response) {
 
           if(typeof response.data.restaurants != 'undefined')
           {
+
+              /*
+              var mapProp = {
+              center:new google.maps.LatLng($scope.query.lat, $scope.query.lon),
+              zoom:9,
+              mapTypeId: 'roadmap'
+            };
+            //console.log("prop created");
+            $scope.gmap = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+*/
+               $scope.initialize($scope.query.lat, $scope.query.lon);
+
+
             for(var x = 0; x < response.data.restaurants.length; x++)
             {
-              console.log(response.data.restaurants[x].restaurant);
-              console.log('only name?');
-              console.log(response.data.restaurants[x].restaurant.name);
+              //var restaurant = response.data.restaurants[x].restaurant;
+
+              $scope.setMapPosition(response.data.restaurants[x].restaurant);
+
+
+              //console.log(response.data.restaurants[x].restaurant);
+              //console.log('only name?');
+              //console.log(response.data.restaurants[x].restaurant.name);
             }
           }
           else
@@ -90,25 +116,12 @@
       });
     }
 
-    $scope.getLocation = function() { 
-      $http.get('http://freegeoip.net/json/').then(function httpHandling(response)
-      {
-        //TODO: Do something with the location data.
-        //Handle the data however you need.
-        $scope.location = response.data;
-        $scope.query.lat = response.data.latitude
-        $scope.query.lon = response.data.longitude;
 
-        $scope.getCategories();
-        $scope.getCuisines();
 
-      });
-    }
-
-    $scope.initialize = function()
+    $scope.initialize = function(lat, lng)
     {
-      $http.get('http://freegeoip.net/json/').then(function httpHandling(response)
-      {
+
+
 
         //TODO: Do something with the location data.
         //Handle the data however you need.
@@ -116,18 +129,18 @@
 
         //console.log("creating map prop");
         var mapProp = {
-          center:new google.maps.LatLng(response.data.latitude, response.data.longitude),
+          center:new google.maps.LatLng(lat, lng),
           zoom:9,
           mapTypeId: 'roadmap'
         };
         //console.log("prop created");
-        var gmap = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+        $scope.gmap = new google.maps.Map(document.getElementById("googleMap"), mapProp);
         //Creates an empty global variable which we define in function placeMarkerAndPanTo
         var marker;
 
         //Adds a listener for clicks on the map and runs function if a click registers
-        gmap.addListener('click', function(e) {
-          placeMarkerAndPanTo(e.latLng, gmap);
+        $scope.gmap.addListener('click', function(e) {
+          placeMarkerAndPanTo(e.latLng, $scope.gmap);
         });
 
         //Function that places a marker where user has clicked, or moves current marker if marker already exists
@@ -165,8 +178,27 @@
         }//end of initialize function
         //When the window has finished loading, execute function named initialize
 
-      });
 
+
+    }
+
+    $scope.getLocation = function() {
+      $http.get('http://freegeoip.net/json/').then(function httpHandling(response)
+      {
+        //TODO: Do something with the location data.
+        //Handle the data however you need.
+        $scope.location = response.data;
+        $scope.query.lat = response.data.latitude
+        $scope.query.lon = response.data.longitude;
+
+        $scope.getCategories();
+        $scope.getCuisines();
+        $scope.initialize($scope.query.lat, $scope.query.lon);
+
+
+        //$http.get('http://freegeoip.net/json/').then(function httpHandling(response)
+
+      });
     }
 
     //initialize.
@@ -174,7 +206,7 @@
 
     $scope.getLocation();
 
-    $scope.initialize();
+    //$scope.initialize();
 
 
 

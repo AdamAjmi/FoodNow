@@ -15,15 +15,15 @@ module.exports = {
       res.ok(result);
     }
   },
-  'cousines' : function (req, res) {
-
-    ZomatoService.getCousines(handleCousin);
-
-    function handleCousin(error, result)
-    {
-      res.ok(result);
-    }
-  },
+  // 'cousines' : function (req, res) {
+  //
+  //   ZomatoService.getCousines(handleCousin);
+  //
+  //   function handleCousin(error, result)
+  //   {
+  //     res.ok(result);
+  //   }
+  // },
   'info/:id' : function (req, res) {
     ZomatoService.getResturantDetails(req.params['id'], handleRestaurantDetails);
 
@@ -41,16 +41,18 @@ module.exports = {
     }
   },
   'cuisines/:lat/:lon' : function (req, res) {
-    ZomatoService.getCousinesFromLocation(req.params['lat'], req.params['lon'], handleCousin);
+
+    console.log("lat="+req.params.lat+"\nlon="+req.params.lon);
+    ZomatoService.getCuisinesFromLocation(req.params.lat, req.params.lon, handleCousin);
 
     function handleCousin(error, result)
     {
       res.ok(result);
     }
   },
-  'restaurants/:lat/:lon/:category/:cousins' : function (req, res) {
+  'restaurants/:lat/:lon/:range/:category/:cousins' : function (req, res) {
 
-    ZomatoService.searchResturants(req.params['lat'], req.params['lon'], req.params['category'], req.params['cousins'], handleCites);
+    ZomatoService.searchResturants(req.params.lat, req.params.lon, req.params.range, req.params.category, req.params.cousins, handleCites);
 
     function handleCites(error, result)
     {
@@ -59,15 +61,13 @@ module.exports = {
       });
     }
   },
-  'restaurants/:lat/:lon' : function (req, res) {
+  'restaurants/:lat/:lon/:range' : function (req, res) {
 
-    ZomatoService.searchResturants(req.params['lat'], req.params['lon'], false, false, handleCites);
+    ZomatoService.searchResturants(req.params.lat, req.params.lon, req.params.range, false, false, handleCites);
 
     function handleCites(error, result)
     {
-      res.ok({
-        list : result
-      });
+      res.ok(result);
     }
   }
 };

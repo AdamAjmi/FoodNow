@@ -6,21 +6,21 @@
 
   <div class="container">
     <h2>Food Now</h2>
-    <form>
-      <div class="form-group">
-        <label for="categorySelect">Select A Category:</label>
-        <select class="form-control" id="categorySelect">
-          <option value=false></option>
-          <option ng-repeat="category in categories" value={{ category.categories.id }}>{{ category.categories.name }}</option>
-        </select>
-        <br>
-        <label for="cuisinesSelect">Select Cuisines:</label>
-        <select multiple class="form-control" id="cuisinesSelect" title="use Ctrl to select more than one">
-          <option value=false></option>
-          <option></option>
-        </select>
-      </div>
-    </form>
+    <div class="form-group">
+      <label for="rangeInput">Range (km):</label>
+      <input type="number" min="1" id="rangeInput" class="form-control" ng-model="query.range">
+      <br>
+      <label for="categorySelect">Select A Category:</label>
+      <select class="form-control" id="categorySelect" ng-model="query.category">
+        <option ng-repeat="category in categories" value={{ category.categories.id }}>{{ category.categories.name }}</option>
+      </select>
+      <br>
+      <label for="cuisinesSelect">Select Cuisines:</label>
+      <select multiple class="form-control" id="cuisinesSelect" title="use Ctrl to select more than one" ng-model="query.cuisines">
+        <option ng-repeat="cuisine in cuisines" value={{ cuisine.cuisine.cuisine_id }}>{{ cuisine.cuisine.cuisine_name }}</option>
+      </select>
+    </div>
+    <a ng-click="searchResturants()" class="btn btn-default pull-right">Search</a>
   </div>
 
 
@@ -33,12 +33,36 @@
     $scope.getCategories = function () {
       $http.get("/restaurant/categories").then(function mySucces(response) {
         $scope.categories = response.data.categories;
-        console.log(response.data.categories)
+        console.log(response.data.categories);
       }, function myError(response) {
-        $scope.myWelcome = response.statusText;
+        $scope.categoriesError = response.statusText;
       });
     };
 
+
+    $scope.getCuisines = function () {
+      $http.get("/restaurant/cuisines/"+$scope.query.lat+"/"+$scope.query.lon).then(function mySucces(response) {
+        $scope.cuisines = response.data.cuisines;
+        console.log(response.data.cuisines);
+      }, function myError(response) {
+        $scope.cuisinesError = response.statusText;
+      });
+    };
+
+
+    $scope.searchResturants = function () {
+      $http.get("/restaurant/restaurants/"+$scope.query.lat+"/"+$scope.query.lon+"/"+$scope.query.range).then(function mySucces(response) {
+        $scope.restaurants = response.data;
+        console.log(response.data)
+      }, function myError(response) {
+        $scope.restaurantsError = response.statusText;
+      });
+    };
+
+    $scope.query = {'lat':40.732013,'lon':-73.996155,'range':50,'category':false,'cuisines':false}
+    $scope.getCategories()
+    $scope.getCuisines()
+    
     $scope.getLocation = function() { 
       $http.get('http://freegeoip.net/json/').then(function httpHandling(response)
       {
@@ -48,10 +72,7 @@
       });
     }
 
-    $scope.getCategories();
-
     $scope.getLocation();
-
 
 
   });

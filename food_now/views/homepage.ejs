@@ -20,6 +20,7 @@
       <select multiple class="form-control" id="cuisinesSelect" title="use Ctrl to select more than one" ng-model="query.cuisines">
         <option ng-repeat="cuisine in cuisines" value={{ cuisine.cuisine.cuisine_id }}>{{ cuisine.cuisine.cuisine_name }}</option>
       </select>
+    <label>Select your location:</label>
     </div>
       <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDB2SxMScx_UhuA8A_tudtOo1Onu-1H-VU&callback=initMap">
@@ -125,9 +126,18 @@
           });
           console.log("Position of new marker is: " + latLng);
 
+
         }
         //Pans the map to the clicked coordinates.
         gmap.panTo(latLng);
+        var latitude = marker.position.lat();
+        var longitude = marker.position.lng();
+
+        console.log("Latitude: " + latitude)
+        console.log("Longitude: " + longitude)
+
+
+        //TODO: Pass latLng to Angular so that it can be used for API query to Zomato
       }
   } //end of initialize function
   //When the window has finished loading, execute function named initialize

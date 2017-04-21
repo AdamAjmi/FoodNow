@@ -48,5 +48,25 @@ module.exports.routes = {
 
   '/gmaps': {
     view: 'poc/gmaps'
+  },
+
+
+  //Based on: https://www.ghadeer.io/sailsjs-passport-facebook/
+  '/auth/facebook' : {
+    controller : 'PassportController',
+    action : 'facebookAuth'
+  },
+
+  '/auth/facebook/callback' : {
+    controller : 'PassportController',
+    action : 'facebookCallback'
   }
+
+
+  /*
+  'POST /register': {controller: 'PassportController', action: 'register'},
+  'POST /login':    {controller: 'PassportController', action: 'login'},
+  'GET  /logout':   {controller: 'PassportController', action: 'logout'},*/
+
+
 };

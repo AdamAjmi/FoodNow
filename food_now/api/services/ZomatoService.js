@@ -14,30 +14,15 @@ var headers = {
 
 var ZomatoService = {
 
-  // getResturants : function(lat, lon, range, callback)
-  // {
-  //   return request({ headers : headers, url : url + "gecode?" + "lat=" + lat + "&lon=" + lon}, function(err, response, body)
-  //   {
-  //     if (response.statusCode == 200)
-  //     {
-  //       callback(null, JSON.parse(body));
-  //     }
-  //     else
-  //     {
-  //       console.log("error?");
-  //       callback(err, null);
-  //     }
-  //   });
-  // },
 
-  searchResturants : function(lat, lon, range, category, cuisinees, callback)
+  searchRestaurants : function(lat, lon, range, category, cuisines, callback)
   {
-      console.log("lat="+lat+"\nlon="+lon+"\nrange="+range+"\ncategory="+category+"\ncuisinees="+cuisinees);
+      console.log("lat="+lat+"\nlon="+lon+"\nrange="+range+"\ncategory="+category+"\ncuisines="+cuisines);
       var url = "https://developers.zomato.com/api/v2.1/search?";
       var params = ["lat="+lat, "lon="+lon];
       if (range) params.push("radius="+range*1000);
       if (category) params.push("category="+category);
-      if (cuisinees) params.push("cuisinees="+cuisinees);
+      if (cuisines) params.push("cuisines="+cuisines);
       url += params.join('&');
 
       return request({headers: headers, url: url}, function (err, response, body)
@@ -53,33 +38,15 @@ var ZomatoService = {
         }
       });
   },
-  getCities : function (lat, lon, callback) {
 
-    var citiesUrl = url + "cities?" + ["lat=" + lat, "lon=" + lon].join('&');
 
-    return request({url : citiesUrl, headers : headers}, function (err, response, body)
-    {
-      if (response.statusCode == 200)
-      {
-        sails.log("no city error?" + citiesUrl);
-        callback(null, JSON.parse(body));
-      }
-      else
-      {
-        console.log("has error?");
-        callback(err, null);
-      }
-    });
-  },
   getCuisinesFromLocation : function (lat, lon, callback) {
-
     var cuisinesUrl = url + "cuisines?" + ["lat=" + lat, "lon=" + lon].join('&');
-
     return request({url : cuisinesUrl, headers : headers}, function (err, response, body)
     {
       if (response.statusCode == 200)
       {
-        console.log("no Cuisines error?\n"+body);
+        // console.log("no Cuisines error");
         callback(null, JSON.parse(body));
       }
       else
@@ -89,29 +56,14 @@ var ZomatoService = {
       }
     });
   },
-  getCousinesFromCity : function (city_id, callback) {
 
-    var cuisinesUrl = url + "cuisines?city_id=" + city_id;
 
-    return request({url : cuisinesUrl, headers : headers}, function (err, response, body)
-    {
-      if (response.statusCode == 200)
-      {
-        callback(null, JSON.parse(body));
-      }
-      else
-      {
-        console.log("error?");
-        callback(err, null);
-      }
-    });
-  },
   getCategories : function (callback) {
     return request({url : url + "categories", headers : headers}, function (err, response, body)
     {
       if (response.statusCode == 200)
       {
-        console.log("error?");
+        // console.log("no error");
         callback(null, JSON.parse(body));
       }
       else
@@ -121,6 +73,8 @@ var ZomatoService = {
       }
     });
   },
+
+
   getResturantDetails : function (resutrant_id, callback) {
     return request({url : url + "resturant?res_id=" + resutrant_id, headers : headers}, function (err, response, body)
     {
@@ -131,6 +85,41 @@ var ZomatoService = {
       else
       {
         console.log("error?");
+        callback(err, null);
+      }
+    });
+  },
+
+
+  getCousinesFromCity : function (city_id, callback) {
+    var cuisinesUrl = url + "cuisines?city_id=" + city_id;
+    return request({url : cuisinesUrl, headers : headers}, function (err, response, body)
+    {
+      if (response.statusCode == 200)
+      {
+        callback(null, JSON.parse(body));
+      }
+      else
+      {
+        console.log("error?");
+        callback(err, null);
+      }
+    });
+  },
+
+
+  getCities : function (lat, lon, callback) {
+    var citiesUrl = url + "cities?" + ["lat=" + lat, "lon=" + lon].join('&');
+    return request({url : citiesUrl, headers : headers}, function (err, response, body)
+    {
+      if (response.statusCode == 200)
+      {
+        sails.log("no city error?" + citiesUrl);
+        callback(null, JSON.parse(body));
+      }
+      else
+      {
+        console.log("has error?");
         callback(err, null);
       }
     });

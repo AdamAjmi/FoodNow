@@ -1,11 +1,12 @@
 
 
 <div ng-app="searchApp" ng-controller="searchCtrl">
-
-  {{location}}
-
-
   <div class="container">
+
+    {{query.cuisines}}
+
+    {{query.category}}
+
     <h2>Food Now</h2>
     <div class="form-group">
       <label for="rangeInput">Range (km):</label>
@@ -13,25 +14,24 @@
       <br>
       <label for="categorySelect">Select A Category:</label>
       <select class="form-control" id="categorySelect" ng-model="query.category">
-        <option ng-repeat="category in categories" value={{ category.categories.id }}>{{ category.categories.name }}</option>
+        <option ng-repeat="category in categories" value={{category.categories.id}}>{{ category.categories.name }}</option>
       </select>
       <br>
-      <label for="cuisinesSelect">Select Cuisines:</label><a class="btn btn-info" ng-click="getCuisines()">refresh</a>
-      <select multiple class="form-control" id="cuisinesSelect" title="use Ctrl to select more than one" ng-model="query.cuisines">
-        <option ng-repeat="cuisine in cuisines" value={{ cuisine.cuisine.cuisine_id }}>{{ cuisine.cuisine.cuisine_name }}</option>
+      <label for="cuisinesSelect">Select Cuisines:</label>
+      <select multiple class="form-control" id="cuisinesSelect" title="use Ctrl to select more than one" ng-model="query.cuisines" size="15">
+        <option ng-repeat="cuisine in cuisines" value={{cuisine.cuisine.cuisine_id}}>{{ cuisine.cuisine.cuisine_name }}</option>
       </select>
-    <label>Select your location:</label>
-    </div>
-      <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDB2SxMScx_UhuA8A_tudtOo1Onu-1H-VU&callback=initMap">
-      </script>
-    <div id="googleMap" style="width:480px;height:360px;">
+      <div style="margin-top:10px;">
+        <a ng-click="search()" class="btn btn-default">Search</a> or <label>Select your location:</label>
+      </div>
+      </div>
+        <script
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDB2SxMScx_UhuA8A_tudtOo1Onu-1H-VU&callback=initMap">
+        </script>
+      <div id="googleMap" style="width:100%;height:360px;">
 
     </div>
-    <a ng-click="search()" class="btn btn-default pull-right">Search</a>
   </div>
-
-
 </div>
 <script>
   var app = angular.module('searchApp', []);
@@ -49,7 +49,6 @@
 
 
     $scope.getCuisines = function () {
-      console.log("getting cuisines at "+$scope.query.lat+"/"+$scope.query.lon+"\n"+"/restaurant/cuisines/"+$scope.query.lat+"/"+$scope.query.lon);
       $http.get("/restaurant/cuisines/"+$scope.query.lat+"/"+$scope.query.lon).then(function mySucces(response) {
         $scope.cuisines = response.data.cuisines;
         console.log(response.data.cuisines);
@@ -60,7 +59,7 @@
 
 
     $scope.searchResturants = function () {
-      $http.get("/restaurant/restaurants/"+$scope.query.lat+"/"+$scope.query.lon+"/"+$scope.query.range).then(function mySucces(response) {
+      $http.get("/restaurant/restaurants/"+$scope.query.lat+"/"+$scope.query.lon+"/"+$scope.query.range+"/"+$scope.query.category+"/"+$scope.query.cuisines.join(",")).then(function mySucces(response) {
         $scope.restaurants = response.data;
         console.log(response.data)
       }, function myError(response) {
@@ -94,7 +93,7 @@
 
     $scope.search = function()
     {
-      $http.get("/restaurant/restaurants/"+$scope.query.lat+"/"+$scope.query.lon+"/"+ $scope.query.range).then(function mySucces(response) {
+      $http.get("/restaurant/restaurants/"+$scope.query.lat+"/"+$scope.query.lon+"/"+ $scope.query.range+"/"+$scope.query.category+"/"+$scope.query.cuisines).then(function mySucces(response) {
 
           if(typeof response.data.restaurants != 'undefined')
           {
@@ -139,11 +138,6 @@
         //TODO: Do something with the location data.
         //Handle the data however you need.
         //$scope.location = response.data;
-
-
-        //Get cuisines list
-        $scope.getCuisines()
-
 
         //console.log("creating map prop");
         var mapProp = {
@@ -214,7 +208,7 @@
         $scope.location = response.data;
         $scope.query.lat = response.data.latitude
         $scope.query.lon = response.data.longitude;
-
+        $scope.query.range = 10
         $scope.getCategories();
         $scope.getCuisines();
         $scope.initialize($scope.query.lat, $scope.query.lon);

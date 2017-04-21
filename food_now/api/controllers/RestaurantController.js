@@ -47,12 +47,13 @@ module.exports = {
 
     function handleCousin(error, result)
     {
+      console.log("Cuisines error?"+error);
       res.ok(result);
     }
   },
-  'restaurants/:lat/:lon/:range/:category/:cousins' : function (req, res) {
+  'restaurants/:lat/:lon/:range/:category/:cuisines' : function (req, res) {
 
-    ZomatoService.searchResturants(req.params.lat, req.params.lon, req.params.range, req.params.category, req.params.cousins, handleCites);
+    ZomatoService.searchResturants(req.params.lat, req.params.lon, req.params.range, req.params.category, req.params.cuisines, handleCites);
 
     function handleCites(error, result)
     {

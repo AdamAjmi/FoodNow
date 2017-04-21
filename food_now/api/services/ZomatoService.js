@@ -79,7 +79,7 @@ var ZomatoService = {
     {
       if (response.statusCode == 200)
       {
-        console.log("no error?");
+        console.log("no Cuisines error?\n"+body);
         callback(null, JSON.parse(body));
       }
       else

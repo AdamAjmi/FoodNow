@@ -16,7 +16,7 @@
         <option ng-repeat="category in categories" value={{ category.categories.id }}>{{ category.categories.name }}</option>
       </select>
       <br>
-      <label for="cuisinesSelect">Select Cuisines:</label>
+      <label for="cuisinesSelect">Select Cuisines:</label><a class="btn btn-info" ng-click="getCuisines()">refresh</a>
       <select multiple class="form-control" id="cuisinesSelect" title="use Ctrl to select more than one" ng-model="query.cuisines">
         <option ng-repeat="cuisine in cuisines" value={{ cuisine.cuisine.cuisine_id }}>{{ cuisine.cuisine.cuisine_name }}</option>
       </select>
@@ -49,6 +49,7 @@
 
 
     $scope.getCuisines = function () {
+      console.log("getting cuisines at "+$scope.query.lat+"/"+$scope.query.lon+"\n"+"/restaurant/cuisines/"+$scope.query.lat+"/"+$scope.query.lon);
       $http.get("/restaurant/cuisines/"+$scope.query.lat+"/"+$scope.query.lon).then(function mySucces(response) {
         $scope.cuisines = response.data.cuisines;
         console.log(response.data.cuisines);
@@ -135,12 +136,14 @@
 
     $scope.initialize = function(lat, lng)
     {
-
-
-
         //TODO: Do something with the location data.
         //Handle the data however you need.
         //$scope.location = response.data;
+
+
+        //Get cuisines list
+        $scope.getCuisines()
+
 
         //console.log("creating map prop");
         var mapProp = {

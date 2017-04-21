@@ -91,7 +91,10 @@
             '<a href="' + restaurant.url + '">' +
             restaurant.name +
             '</h1>' + '</a>' +
-            '<div id="bodyContent">' +  'Address: ' + restaurant.location.address + '</div>'
+            '<div id="bodyContent" style="white-space: pre">' +  '<b>Address: </b>' + restaurant.location.address + '<br>' +
+            '<b>Cuisines: </b>' + restaurant.cuisines + '<br>' +
+            '<b>Rating: </b>' + restaurant.user_rating.aggregate_rating + '/5 based on ' + restaurant.user_rating.votes + ' votes' +
+            '</div>'
             )
           $scope.infoWindow.open($scope.gmap, marker)
         });

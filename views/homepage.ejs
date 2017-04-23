@@ -223,7 +223,7 @@
         $scope.location = response.data;
         $scope.query.lat = response.data.latitude
         $scope.query.lon = response.data.longitude;
-        $scope.query.range = 10
+        //$scope.query.range = 10
         $scope.getCategories();
         $scope.getCuisines();
         $scope.initialize($scope.query.lat, $scope.query.lon);
@@ -236,7 +236,7 @@
     }
 
     //initialize.
-    $scope.query = {'lat': '','lon':'','range':'50','category':false,'cuisines':false}
+    $scope.query = {'lat': '','lon':'','range':10,'category':false,'cuisines':false}
 
     $scope.getLocation();
 
